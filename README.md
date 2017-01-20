@@ -132,6 +132,10 @@ module.exports = {
 }
 ```
 
+## Options
+
+TBD
+
 ## Compression support
 
 Generated files can be compressed with [compression-webpack-plugin](https://github.com/webpack/compression-webpack-plugin), but first ensure that this plugin appears before compression-webpack-plugin in your plugins array:

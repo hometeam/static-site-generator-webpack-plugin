@@ -3,12 +3,14 @@ var evaluate = require('eval');
 var path = require('path');
 var Promise = require('bluebird');
 
-function StaticSiteGeneratorWebpackPlugin(renderSrc, outputPaths, locals, scope) {
+function StaticSiteGeneratorWebpackPlugin(renderSrc, outputPaths, locals, scope, options) {
   this.renderSrc = renderSrc;
+  this.options = options;
   this.outputPaths = Array.isArray(outputPaths) ? outputPaths : [outputPaths];
   this.locals = locals;
   this.scope = scope;
 }
+
 
 StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
   var self = this;
@@ -44,7 +46,7 @@ StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
           var outputFileName = outputPath.replace(/^(\/|\\)/, ''); // Remove leading slashes for webpack-dev-server
 
           if (!/\.(html?)$/i.test(outputFileName)) {
-            outputFileName = path.join(outputFileName, 'index.html');
+            outputFileName = path.join(self.options.outputPathPrefix || '', self.options.outputRewriteFunction(outputFileName) || outputFileName);
           }
 
           var locals = {
